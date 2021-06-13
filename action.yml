@@ -22,6 +22,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Debug
+      shell: bash
+      run: |
+        git log
+        git branch --list
+        git status
     - name: Set commit author information
       shell: bash
       run: |

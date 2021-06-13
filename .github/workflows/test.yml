@@ -31,7 +31,8 @@ jobs:
         with:
           ref: "${{ env.destination }}"
           fetch-depth: 0
-      - uses: ./
+      - name: "Merge example branch ${{ env.source }} into ${{ env.destination }}"
+        uses: ./
         with:
           from: "origin/${{ env.source }}"
   assert:
@@ -44,7 +45,8 @@ jobs:
           ref: "${{ env.destination }}"
       - id: example-file
         run: "echo ::set-output name=body::$(cat ${{ env.example-file }})"
-      - uses: pr-mpt/actions-assert@v2
+      - name: Test merge succeeded by verifying source file exists in destination branch
+        uses: pr-mpt/actions-assert@v2
         with:
           assertion: npm://@assertions/is-equal
           expected: "${{ env.destination }}"

@@ -32,7 +32,9 @@ runs:
       run: git merge ${{ inputs.from }} -s ${{ inputs.strategy }} --no-ff --no-commit
     - name: "Commit changes from ${{ inputs.from }}"
       shell: bash
-      run: git commit -a -m 'Merge branch ${{ inputs.from }}' --author='${{ inputs.author }}'
+      run: |
+        git diff-index --quiet HEAD \
+        || git commit -am 'Merge branch ${{ inputs.from }}' --author='${{ inputs.author }}'
     - name: "Push changes from ${{ inputs.from }} to origin"
       shell: bash
       run: |

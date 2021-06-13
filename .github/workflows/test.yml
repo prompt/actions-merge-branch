@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: fregante/setup-git-user@v1
-      - run: "git checkout -b ${{ env.destination }}"
-      - run: "git checkout -b ${{ env.source }}"
+      - run: "git checkout -b ${{ env.destination }} main"
+      - run: "git checkout -b ${{ env.source }} main"
       - run: "echo ${{ env.destination }} > example-change.test"
       - run: "git add example-change.test"
       - run: "git commit -m 'chore: Add example file'"
@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: "${{ env.destination }}"
+          fetch-depth: 0
       - uses: ./
         with:
           from: "${{ env.source }}"

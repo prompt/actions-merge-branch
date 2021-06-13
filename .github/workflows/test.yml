@@ -43,7 +43,7 @@ jobs:
         with:
           ref: "${{ env.destination }}"
       - id: example-file
-        run: "::set-output name=body::$(cat ${{ env.example-file }})"
+        run: "echo ::set-output name=body::$(cat ${{ env.example-file }})"
       - uses: pr-mpt/actions-assert@v2
         with:
           assertion: npm://@assertions/is-equal

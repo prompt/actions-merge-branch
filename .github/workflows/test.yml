@@ -34,7 +34,7 @@ jobs:
       - name: "Merge example branch ${{ env.source }} into ${{ env.destination }}"
         uses: ./
         with:
-          from: "origin/${{ env.source }}"
+          from: "${{ env.source }}"
   merge-without-changes:
     runs-on: ubuntu-latest
     steps:

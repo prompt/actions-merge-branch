@@ -9,7 +9,8 @@ env:
   source: "tests-source"
   destination: "tests-destination"
   test-key: "${{ format('{0}-{1}', github.run_id, github.run_number) }}"
-  author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+  GIT_COMMITTER_NAME: "github-actions[bot]"
+  GIT_COMMITTER_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com>"
 
 jobs:
   fixtures:
@@ -23,7 +24,7 @@ jobs:
       - run: "git checkout -b ${{ env.source }}-${{ env.test-key }}"
       - run: "echo ${{ env.test-key }} > example-change.test"
       - run: "git add example-change.test"
-      - run: "git commit --author=\"${{ env.author }}\" -m 'chore: Add example file'"
+      - run: "git commit -m 'chore: Add example file'"
       - run: "git checkout ${{ env.destination }}-${{ env.test-key }}"
       - run: git push
   integration-tests:

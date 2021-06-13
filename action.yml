@@ -1,5 +1,5 @@
 name: "Merge Into Current Branch"
-description: "Synchronise branches using git merge with recursive strategy"
+description: "Synchronise branches using Git merge with a (recursive) strategy"
 branding:
   icon: "git-merge"
   color: "blue"

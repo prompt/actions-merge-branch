@@ -29,10 +29,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: "${{ env.destination }}"
-          fetch-depth: 0
       - uses: ./
         with:
-          from: "${{ env.source }}"
+          from: "origin/${{ env.source }}"
           # author: "Alice Tester <alice@example.com>"
           # strategy: "recursive -Xtheirs"
           # push: true

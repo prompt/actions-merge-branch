@@ -1,0 +1,44 @@
+name: "Merge Into Current Branch"
+description: "Synchronise branches using Git merge with a (recursive) strategy"
+branding:
+  icon: "git-merge"
+  color: "blue"
+inputs:
+  from:
+    description: "Branch to merge into the current branch"
+    required: true
+  author:
+    description: "Commit author in Git author format"
+    default: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+    required: true
+  strategy:
+    description: "Merge strategy with any strategy options"
+    default: "recursive -Xtheirs"
+    required: true
+  push:
+    description: "Push commit to origin?"
+    default: "true"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set commit author information
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: Merge ${{ inputs.from }} with ${{ inputs.strategy }} strategy
+      shell: bash
+      run: git merge ${{ inputs.from }} -s ${{ inputs.strategy }} --no-ff --no-commit
+    - name: "Commit changes from ${{ inputs.from }}"
+      shell: bash
+      run: |
+        git diff-index --quiet HEAD \
+        || git commit -am 'Merge branch ${{ inputs.from }}' --author='${{ inputs.author }}'
+    - name: "Push changes from ${{ inputs.from }} to origin"
+      shell: bash
+      run: |
+        if [ "${{ inputs.push }}" == "true" ]
+        then
+          git push origin HEAD
+        fi

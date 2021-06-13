@@ -9,8 +9,6 @@ env:
   source: "tests-source"
   destination: "tests-destination"
   test-key: "${{ format('{0}-{1}', github.run_id, github.run_number) }}"
-  GIT_AUTHOR_NAME: "github-actions[bot]"
-  GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com>"
 
 jobs:
   fixtures:
@@ -20,6 +18,7 @@ jobs:
       source: "${{ env.source }}-${{ env.test-key }}"
     steps:
       - uses: actions/checkout@v2
+      - uses: fregante/setup-git-user@v1
       - run: "git checkout -b ${{ env.destination }}-${{ env.test-key }}"
       - run: "git checkout -b ${{ env.source }}-${{ env.test-key }}"
       - run: "echo ${{ env.test-key }} > example-change.test"

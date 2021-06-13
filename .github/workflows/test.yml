@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
       - uses: ./
         with:
-          from: "${{ env.source }}"
+          from: "origin/${{ env.source }}"
   assert:
     runs-on: ubuntu-latest
     needs:

@@ -8,6 +8,7 @@ on:
 env:
   source: "${{ format('{0}-{1}-{2}', 'tests-source', github.run_id, github.run_number) }}"
   destination: "${{ format('{0}-{1}-{2}', 'tests-destination', github.run_id, github.run_number) }}"
+  example-file: "example-change.test"
 
 jobs:
   fixtures:
@@ -17,11 +18,11 @@ jobs:
       - uses: fregante/setup-git-user@v1
       - run: "git checkout -b ${{ env.destination }}"
       - run: "git checkout -b ${{ env.source }}"
-      - run: "echo ${{ env.destination }} > example-change.test"
+      - run: "echo ${{ env.destination }} > ${{ env.example-file }}"
       - run: "git add example-change.test"
       - run: "git commit -m 'chore: Add example file'"
       - run: "git push --set-upstream origin ${{ env.destination }} ${{ env.source }}"
-  integration-tests:
+  merge:
     runs-on: ubuntu-latest
     needs:
       - fixtures
@@ -32,7 +33,26 @@ jobs:
           fetch-depth: 0
       - uses: ./
         with:
-          from: "origin/${{ env.source }}"
-          # author: "Alice Tester <alice@example.com>"
-          # strategy: "recursive -Xtheirs"
-          # push: true
+          from: "${{ env.source }}"
+  assert:
+    runs-on: ubuntu-latest
+    needs:
+      - merge
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "${{ env.destination }}"
+      - id: example-file
+        run: "::set-output name=body::$(cat ${{ env.example-file }})"
+      - uses: pr-mpt/actions-assert@v2
+        with:
+          assertion: npm://@assertions/is-equal
+          expected: "${{ env.destination }}"
+          actual: "${{ steps.example-file.outputs.body }}"
+  clean-up:
+    runs-on: ubuntu-latest
+    needs:
+      - assert
+    steps:
+      - name: Delete test branches
+        run: git push origin --delete ${{ env.source }} ${{ env.destination }}

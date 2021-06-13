@@ -1,0 +1,40 @@
+name: "Test Action"
+
+on:
+  push:
+    branches:
+      - "**"
+
+env:
+  source: "tests-source"
+  destination: "tests-destination"
+  test-key: "${{ format('{0}-{1}', github.run_id, github.run_number) }}"
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    outputs:
+      destination: "${{ env.destination }}-${{ env.test-key }}"
+      source: "${{ env.source }}-${{ env.test-key }}"
+    steps:
+      - uses: actions/checkout@v2
+      - run: "git checkout -b ${{ env.destination }}-${{ env.test-key }}"
+      - run: "git checkout -b ${{ env.source }}-${{ env.test-key }}"
+      - run: "echo ${{ env.test-key }} > example-change.test"
+      - run: "git commit -am 'chore: Add example file'"
+      - run: "git checkout ${{ env.destination }}-${{ env.test-key }}"
+      - run: git push
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - fixtures
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "${{ needs.fixtures.outputs.destination }}"
+      - uses: ./
+        with:
+          from: "${{ env.source }}"
+          # author: "Alice Tester <alice@example.com>"
+          # strategy: "recursive -Xtheirs"
+          # push: true

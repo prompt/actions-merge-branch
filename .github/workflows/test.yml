@@ -35,6 +35,16 @@ jobs:
         uses: ./
         with:
           from: "origin/${{ env.source }}"
+  merge-without-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create a branch equal to the current branch
+        run: git branch -b equal-branch
+      - name: Merge equal branch
+        uses: ./
+        with:
+          from: "equal-branch"
   assert:
     runs-on: ubuntu-latest
     needs:

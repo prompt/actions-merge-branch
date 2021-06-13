@@ -54,5 +54,6 @@ jobs:
     needs:
       - assert
     steps:
+      - uses: actions/checkout@v2
       - name: Delete test branches
         run: git push origin --delete ${{ env.source }} ${{ env.destination }}

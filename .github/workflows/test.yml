@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create a branch equal to the current branch
-        run: git branch -b equal-branch
+        run: git branch equal-branch
       - name: Merge equal branch
         uses: ./
         with:

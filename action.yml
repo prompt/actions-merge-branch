@@ -29,12 +29,7 @@ runs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     - name: Merge ${{ inputs.from }} with ${{ inputs.strategy }} strategy
       shell: bash
-      run: git merge ${{ inputs.from }} -s ${{ inputs.strategy }} --no-ff --no-commit
-    - name: "Commit changes from ${{ inputs.from }}"
-      shell: bash
-      run: |
-        git diff-index --quiet HEAD \
-        || git commit -am 'Merge branch ${{ inputs.from }}' --author='${{ inputs.author }}'
+      run: git merge ${{ inputs.from }} -s ${{ inputs.strategy }} --no-ff
     - name: "Push changes from ${{ inputs.from }} to origin"
       shell: bash
       run: |

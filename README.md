@@ -14,6 +14,7 @@ pr-mpt/actions-merge-branch@v1
 | **`from`** | **Branch to merge into the current branch** | **<kbd>required</kbd>** | **`main`** |
 | `author` | Merge commit author | GitHub Actions<sup>[1]</sup> | `Alice <alice@example.com>` |
 | `strategy` | Merge strategy with options | `recursive -Xtheirs` | `recursive`<br/>`recursive -Xours` |
+| `commit` | Commit changes? | `true` | `true` `false` |
 | `push` | Push merge commit to origin? | `true` | `true` `false` |
 
 [1] [`github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>`][users/github-actions]

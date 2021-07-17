@@ -7,6 +7,10 @@ inputs:
   from:
     description: "Branch to merge into the current branch"
     required: true
+  commit:
+    description: "Commit changes?"
+    default: "true"
+    required: true
   author:
     description: "Commit author in Git author format"
     default: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
@@ -29,7 +33,14 @@ runs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     - name: Merge ${{ inputs.from }} with ${{ inputs.strategy }} strategy
       shell: bash
-      run: git merge ${{ inputs.from }} -s ${{ inputs.strategy }} --no-ff
+      run: |
+        MERGE="git merge ${{ inputs.from }} -s ${{ inputs.strategy }}"
+        if [ "${{ inputs.commit }}" == "true" ]
+        then
+          eval $MERGE --commit
+        else
+          eval $MERGE --no-commit
+        fi
     - name: "Push changes from ${{ inputs.from }} to origin"
       shell: bash
       run: |

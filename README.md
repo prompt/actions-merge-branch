@@ -4,7 +4,7 @@ A GitHub Action for keeping two branches in sync by merging in any `source`
 branch changes using `git` locally -- not the GitHub API.
 
 ```
-pr-mpt/actions-merge-branch@v1
+pr-mpt/actions-merge-branch@v2
 ```
 
 ## Inputs
@@ -44,7 +44,7 @@ jobs:
         with:
           ref: "release"
           fetch-depth: 0
-      - uses: pr-mpt/actions-merge-branch@v0
+      - uses: pr-mpt/actions-merge-branch@v2
         with:
           from: "origin/main"
 ```

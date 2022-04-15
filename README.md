@@ -44,7 +44,7 @@ jobs:
         with:
           ref: "release"
           fetch-depth: 0
-      - uses: pr-mpt/actions-merge-branch@v1
+      - uses: pr-mpt/actions-merge-branch@v2
         with:
           from: "origin/main"
 ```

@@ -56,7 +56,7 @@ jobs:
       - id: example-file
         run: "echo ::set-output name=body::$(cat ${{ env.example-file }})"
       - name: Test merge succeeded by verifying source file exists in destination branch
-        uses: pr-mpt/actions-assert@v2
+        uses: prompt/actions-assert@v2
         with:
           assertion: npm://@assertions/is-equal
           expected: "${{ env.destination }}"
